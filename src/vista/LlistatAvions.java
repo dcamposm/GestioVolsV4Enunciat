@@ -1,5 +1,6 @@
 package vista;
 
+import java.awt.GridLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTable;
@@ -33,7 +34,21 @@ public class LlistatAvions {
        
      */
     public LlistatAvions() {
+        frame = new JFrame("Llistat d'avions");
+        
+        frame.setLayout(new GridLayout(1,1));
+        
+        TaulaAvio taulaAvio = new TaulaAvio();
+        
+        taulaAvions = new JTable(taulaAvio.getAvions(), taulaAvio.getNomColumnes());
+        
+        bSortir = new JButton("Sortir");
 
+        frame.add(bSortir);
+        
+        frame.setSize(AMPLADA, ALCADA);
+
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     public JFrame getFrame() {
