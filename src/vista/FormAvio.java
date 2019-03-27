@@ -45,7 +45,37 @@ public class FormAvio {
         
      */
     public FormAvio() {
+        frame = new JFrame("Formulari Avió");
+        
+        frame.setLayout(new GridLayout(1,1));
+        
+        lCodi = new JLabel("Codi");
+        lFabricant = new JLabel("Fabricant");
+        lModel = new JLabel("Model");
+        lCapacitat = new JLabel("Capacitat");
+        
+        tCodi = new JTextField();
+        tFabricant = new JTextField();
+        tModel = new JTextField();
+        tCapacitat = new JTextField();
+        
+        bDesar = new JButton("Desar");
+        bSortir = new JButton("Sortir");
+        
+        frame.add(lCodi);
+        frame.add(tCodi);
+        frame.add(lFabricant);
+        frame.add(tFabricant);
+        frame.add(lModel);
+        frame.add(tModel);
+        frame.add(lCapacitat);
+        frame.add(tCapacitat);
+        frame.add(bDesar);
+        frame.add(bSortir);
+        
+        frame.setSize(AMPLADA, ALCADA);
 
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     /*
@@ -56,7 +86,37 @@ public class FormAvio {
      - Mostrar els valors passats per paràmetre en els camps de text pertinents del formulari.
      */
     public FormAvio(String codi, String fabricant, String model, int capacitat) {
+        frame = new JFrame("Formulari Avió");
+        
+        frame.setLayout(new GridLayout(1,1));
+        
+        lCodi = new JLabel("Codi");
+        lFabricant = new JLabel("Fabricant");
+        lModel = new JLabel("Model");
+        lCapacitat = new JLabel("Capacitat");
+        
+        tCodi = new JTextField(codi);
+        tFabricant = new JTextField(fabricant);
+        tModel = new JTextField(model);
+        tCapacitat = new JTextField(capacitat);
+        
+        bDesar = new JButton("Desar");
+        bSortir = new JButton("Sortir");
+        
+        frame.add(lCodi);
+        frame.add(tCodi);
+        frame.add(lFabricant);
+        frame.add(tFabricant);
+        frame.add(lModel);
+        frame.add(tModel);
+        frame.add(lCapacitat);
+        frame.add(tCapacitat);
+        frame.add(bDesar);
+        frame.add(bSortir);
+        
+        frame.setSize(AMPLADA, ALCADA);
 
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     public JFrame getFrame() {

@@ -43,7 +43,8 @@ public class LlistatAvions {
         taulaAvions = new JTable(taulaAvio.getAvions(), taulaAvio.getNomColumnes());
         
         bSortir = new JButton("Sortir");
-
+        
+        frame.add(taulaAvions);
         frame.add(bSortir);
         
         frame.setSize(AMPLADA, ALCADA);
