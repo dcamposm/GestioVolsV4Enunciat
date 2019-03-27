@@ -1,5 +1,6 @@
 package vista;
 
+import java.awt.GridLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTable;
@@ -32,7 +33,13 @@ public class LlistatCompanyies {
        
      */
     public LlistatCompanyies() {
+        frame = new JFrame("Llistat de companyies");
         
+        frame.setLayout(new GridLayout(1,1));
+        
+        frame.setSize(AMPLADA, ALCADA);
+
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     public JFrame getFrame() {
