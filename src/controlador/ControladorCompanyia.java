@@ -3,6 +3,7 @@ package controlador;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
+import model.Companyia;
 import vista.FormCompanyia;
 import vista.LlistatCompanyies;
 import vista.MenuCompanyia;
@@ -26,7 +27,8 @@ public class ControladorCompanyia implements ActionListener {
     - Es crida a afegirListenersMenu
      */
     public ControladorCompanyia() {
-
+        menuCompanyia = new MenuCompanyia();
+        afegirListenersMenu();
     }
 
     /*  
@@ -36,7 +38,9 @@ public class ControladorCompanyia implements ActionListener {
     Retorn: cap
      */
     private void afegirListenersMenu() {
- 
+        for (int i = 0; i < menuCompanyia.getMenuButtons().length; i++) {
+            menuCompanyia.getMenuButtons()[i].addActionListener(this);
+        }
     }
 
     /*  
@@ -46,7 +50,8 @@ public class ControladorCompanyia implements ActionListener {
     Retorn: cap
      */
     private void afegirListenersForm() {
-      
+        formCompanyia.getDesar().addActionListener(this);
+        formCompanyia.getSortir().addActionListener(this);
     }
 
     /*  
@@ -56,7 +61,7 @@ public class ControladorCompanyia implements ActionListener {
     Retorn: cap
      */
     private void afegirListenersLlistat() {
-       
+       llistatCompanyies.getSortir().addActionListener(this);
     }
 
     /*  
@@ -76,8 +81,16 @@ public class ControladorCompanyia implements ActionListener {
     Retorn: cap
      */
     private void seleccionarCompanyia() {
-
+        Object[] codis = new Object[ControladorPrincipal.getMAXCOMPANYIES()];
         
+        for (int i = 0; i < codis.length; i++) {
+            codis[i]=ControladorPrincipal.getCompanyies()[i].getCodi();
+        }
+        opcioSeleccionada = JOptionPane.showOptionDialog(null,"Selecciona una companyia","Seleccionar companyia",JOptionPane.DEFAULT_OPTION,JOptionPane.QUESTION_MESSAGE,null, codis,null);
+        
+        if (opcioSeleccionada > -1){
+            ControladorPrincipal.setCompanyiaActual(ControladorPrincipal.getCompanyies()[opcioSeleccionada]);
+        }
     }
 
     /*  
@@ -91,8 +104,13 @@ public class ControladorCompanyia implements ActionListener {
     Retorn: Verdader si s'ha introduït el nom. Fals en cas contrari.
      */
     private Boolean validarCompanyia() {
-        
-    }
+        if (formCompanyia.gettNom().getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "S'ha d'introduir el nom", "ATENCIÓ!!!", JOptionPane.WARNING_MESSAGE);
+            return false;
+        } else {
+            return true;
+        }
+   }
 
     /*
     Paràmetres: ActionEvent

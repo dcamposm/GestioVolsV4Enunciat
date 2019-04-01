@@ -54,10 +54,10 @@ public class FormAvio {
         lModel = new JLabel("Model");
         lCapacitat = new JLabel("Capacitat");
         
-        tCodi = new JTextField();
-        tFabricant = new JTextField();
-        tModel = new JTextField();
-        tCapacitat = new JTextField();
+        tCodi = new JTextField(20);
+        tFabricant = new JTextField(20);
+        tModel = new JTextField(20);
+        tCapacitat = new JTextField(20);
         
         bDesar = new JButton("Desar");
         bSortir = new JButton("Sortir");
@@ -90,10 +90,10 @@ public class FormAvio {
         
         frame.setLayout(new GridLayout(1,1));
         
-        lCodi = new JLabel("Codi");
-        lFabricant = new JLabel("Fabricant");
-        lModel = new JLabel("Model");
-        lCapacitat = new JLabel("Capacitat");
+        lCodi = new JLabel("Codi",20);
+        lFabricant = new JLabel("Fabricant",20);
+        lModel = new JLabel("Model",20);
+        lCapacitat = new JLabel("Capacitat",20);
         
         tCodi = new JTextField(codi);
         tFabricant = new JTextField(fabricant);
