@@ -37,6 +37,16 @@ public class LlistatCompanyies {
         
         frame.setLayout(new GridLayout(1,1));
         
+        TaulaCompanyia taulaCompanyia = new TaulaCompanyia();
+        
+        taulaCompanyies = new JTable(taulaCompanyia.getCompanyes(), taulaCompanyia.getNomColumnes());
+        
+        bSortir = new JButton("Sortir");
+
+        frame.add(taulaCompanyies);
+        
+        frame.add(bSortir);
+        
         frame.setSize(AMPLADA, ALCADA);
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
