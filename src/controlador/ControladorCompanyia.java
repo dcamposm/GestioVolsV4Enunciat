@@ -81,7 +81,7 @@ public class ControladorCompanyia implements ActionListener {
     Retorn: cap
      */
     private void seleccionarCompanyia() {
-        Object[] codis = new Object[ControladorPrincipal.getMAXCOMPANYIES()];
+        Object[] codis = new Object[ControladorPrincipal.getCompanyies().length];
         
         for (int i = 0; i < codis.length; i++) {
             codis[i]=ControladorPrincipal.getCompanyies()[i].getCodi();
@@ -162,7 +162,51 @@ public class ControladorCompanyia implements ActionListener {
         Retorn: cap
      */
     public void actionPerformed(ActionEvent e) {
+        Object gestorEsdeveniments = e.getSource();
         
+        if (gestorEsdeveniments.equals(menuCompanyia.getMenuButtons())) {
+            if (gestorEsdeveniments.equals(menuCompanyia.getMenuButtons()[0])) {
+                opcioSeleccionada = 0;
+            } else if (gestorEsdeveniments.equals(menuCompanyia.getMenuButtons()[1])){
+                opcioSeleccionada = 1;
+            } else if (gestorEsdeveniments.equals(menuCompanyia.getMenuButtons()[2])){
+                opcioSeleccionada = 2;
+            } else if (gestorEsdeveniments.equals(menuCompanyia.getMenuButtons()[3])){
+                opcioSeleccionada = 3;
+            } else if (gestorEsdeveniments.equals(menuCompanyia.getMenuButtons()[4])){
+                opcioSeleccionada = 4;
+            } else if (gestorEsdeveniments.equals(menuCompanyia.getMenuButtons()[5])){
+                opcioSeleccionada = 5;
+            } else if (gestorEsdeveniments.equals(menuCompanyia.getMenuButtons()[6])){
+                opcioSeleccionada = 6;
+            }
+            seleccionarOpcio(opcioSeleccionada);
+        } 
+        else if (gestorEsdeveniments.equals(formCompanyia.getDesar())){
+            if (opcioSeleccionada == 1){
+                if (validarCompanyia() == true){
+                    Companyia nCompanyia = new Companyia(formCompanyia.gettNom().getText());
+                    ControladorPrincipal.getCompanyies()[ControladorPrincipal.getPosicioCompanyies()] = nCompanyia;
+                    ControladorPrincipal.setPosicioCompanyies(ControladorPrincipal.getPosicioCompanyies()+1);
+                    ControladorPrincipal.setCompanyiaActual(nCompanyia);
+                    opcioSeleccionada = 2;
+                }
+            } else if (opcioSeleccionada == 3){
+               if (validarCompanyia() == true){
+                    Companyia nCompanyia = new Companyia(formCompanyia.gettNom().getText());
+                    ControladorPrincipal.getCompanyies()[ControladorPrincipal.getPosicioCompanyies()] = nCompanyia;
+                    ControladorPrincipal.setPosicioCompanyies(ControladorPrincipal.getPosicioCompanyies()+1);
+                    ControladorPrincipal.setCompanyiaActual(nCompanyia);
+                    opcioSeleccionada = 2;
+                } 
+            }
+        } else if (gestorEsdeveniments.equals(formCompanyia.getSortir())){
+            formCompanyia.getFrame().setVisible(false);
+            menuCompanyia.getFrame().setVisible(true);
+        } else if (gestorEsdeveniments.equals(llistatCompanyies.getSortir())){
+            llistatCompanyies.getFrame().setVisible(false);
+            menuCompanyia.getFrame().setVisible(true);
+        }
     }
 
     private void seleccionarOpcio(int opcio) {
@@ -208,7 +252,7 @@ public class ControladorCompanyia implements ActionListener {
                     afegirListenersLlistat();
                 } else {
                     menuCompanyia.getFrame().setVisible(true);
-                    JOptionPane.showMessageDialog(menuCCompanyia.getFrame(), "Abans s'ha de crear al menys una companyia", "Avís", JOptionPane.PLAIN_MESSAGE);
+                    JOptionPane.showMessageDialog(menuCompanyia.getFrame(), "Abans s'ha de crear al menys una companyia", "Avís", JOptionPane.PLAIN_MESSAGE);
                 }
                 break;
             case 5: //Desar contingut
