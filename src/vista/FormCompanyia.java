@@ -1,5 +1,6 @@
 package vista;
 
+import java.awt.GridLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -42,7 +43,31 @@ public class FormCompanyia {
         
      */
     public FormCompanyia() {
+        frame = new JFrame("Formulari Companyia");
         
+        frame.setLayout(new GridLayout(1,1));
+        
+        lCodi = new JLabel("Codi");
+        lNom = new JLabel("Nom");
+        
+        tCodi = new JTextField(20);
+        tNom = new JTextField(20);
+        
+        tCodi.setEnabled(false);
+        
+        bDesar = new JButton("Desar");
+        bSortir = new JButton("Sortir");
+        
+        frame.add(lCodi);
+        frame.add(tCodi);
+        frame.add(lNom);
+        frame.add(tNom);
+        frame.add(bDesar);
+        frame.add(bSortir);
+        
+        frame.setSize(AMPLADA, ALCADA);
+
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
      /*
@@ -53,7 +78,31 @@ public class FormCompanyia {
      - Mostrar els valors passats per paràmetre en els camps de text pertinents del formulari.
      */
     public FormCompanyia(int codi, String adreca) {
+        frame = new JFrame("Formulari Companyia");
         
+        frame.setLayout(new GridLayout(1,1));
+        
+        lCodi = new JLabel("Codi");
+        lNom = new JLabel("Nom");
+        
+        tCodi = new JTextField(String.valueOf(codi), 20);
+        tNom = new JTextField(adreca, 20);
+        
+        tCodi.setEnabled(false);
+        
+        bDesar = new JButton("Desar");
+        bSortir = new JButton("Sortir");
+        
+        frame.add(lCodi);
+        frame.add(tCodi);
+        frame.add(lNom);
+        frame.add(tNom);
+        frame.add(bDesar);
+        frame.add(bSortir);
+        
+        frame.setSize(AMPLADA, ALCADA);
+
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     public JFrame getFrame() {
