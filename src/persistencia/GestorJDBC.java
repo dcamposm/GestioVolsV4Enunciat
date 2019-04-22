@@ -1,8 +1,13 @@
 package persistencia;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import model.Avio;
 import model.Companyia;
 import principal.GestioVolsExcepcio;
 
@@ -39,7 +44,22 @@ public class GestorJDBC implements ProveedorPersistencia {
      *
      */
     public void estableixConnexio() throws SQLException {
-
+        try{
+            //Carreguem el controlador MySQL. Class.forName retorna un objecte
+            //associat al paràmetre, en el nostre cas un controlador per mysql
+            Class.forName("com.mysql.jdbc.Driver");
+            //Connectem amb la base de dades
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/GestorVols", "root", "");
+            System.out.println("Ens hem connectat");
+        }catch (ClassNotFoundException e1){
+           //Error si no es pot llegir el controlador 
+           conn = null;
+           System.out.println("ERROR: no s'ha trobat el controlador de la BD: "+e1.getMessage());
+        }catch (SQLException e2) {
+           //Error SQL: de usuari o contrasenya
+           conn = null;
+           System.out.println("ERROR: SQL ha fallat: "+e2.getMessage());
+	}
     }
 
    /*
@@ -48,7 +68,10 @@ public class GestorJDBC implements ProveedorPersistencia {
      *
      */
     public void tancaConnexio() throws SQLException {
-  
+        if (conn!=null){ //Si existeix la connexió....
+            conn.close(); //Tanquem la connexió
+            conn = null;
+        }
     }
 
     /*
@@ -73,7 +96,28 @@ public class GestorJDBC implements ProveedorPersistencia {
      */
     @Override
     public void desarDades(String nomFitxer, Companyia companyia) throws GestioVolsExcepcio {
-
+        Statement cerca;
+        try {
+            cerca = conn.createStatement();
+            //recollim el resultat de la cerca
+            if (cerca.execute("SELECT *  FROM companyies WHERE codi = "+nomFitxer)){
+                cerca.executeUpdate("UPDATE companyies set nom='"+companyia.getNom()+"' where codi="+nomFitxer);
+                
+                cerca.execute("DELETE FROM avions where codiCompanyia="+nomFitxer);
+                
+                for (int i = 0; i < companyia.getComponents().size(); i++) {
+                    if (companyia.getComponents().get(i) instanceof Avio){
+                        cerca.executeUpdate("INSERT INTO avio(codi,fabricant,model,capacitat,codiCompanyia)"
+                                + " VALUES ('"+((Avio)companyia.getComponents().get(i)).getCodi()+"','"+((Avio)companyia.getComponents().get(i)).getFabricant()+"',"
+                                        + "'"+((Avio)companyia.getComponents().get(i)).getModel()+"',"+nomFitxer+"');");
+                    }
+                }
+            } else {
+                cerca.executeUpdate("INSERT INTO companyies(codi,nom) VALUES ('"+nomFitxer+"','"+companyia.getNom()+"');");
+            } 
+        } catch (Exception ex) {
+            throw new GestioVolsExcepcio("GestorJDBC.desar");
+        } 
     }
 
     /*
@@ -98,7 +142,16 @@ public class GestorJDBC implements ProveedorPersistencia {
      */
     @Override
     public Companyia carregarDades(String nomFitxer) throws ParseException, GestioVolsExcepcio {
-
-    
+        Statement cerca;
+        
+        try {
+            cerca = conn.createStatement();
+            //recollim el resultat de la cerca
+            cerca.execute("SELECT *  FROM companyies WHERE codi = "+nomFitxer);
+            Companyia nCompanyia = new Companyia(nomFitxer);
+            
+        } catch (SQLException ex) {
+            throw new GestioVolsExcepcio("GestorJDBC.carrega");
+        } 
     }
 }
