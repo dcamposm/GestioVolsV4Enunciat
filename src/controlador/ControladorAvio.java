@@ -1,7 +1,12 @@
 package controlador;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Iterator;
+import java.util.Set;
+import javax.swing.JOptionPane;
 import model.Avio;
+import principal.Component;
 import vista.FormAvio;
 import vista.LlistatAvions;
 import vista.MenuAvio;
@@ -25,7 +30,8 @@ public class ControladorAvio {
     - Es crida a afegirListenersMenu
      */
     public ControladorAvio() {
-
+        menuAvio = new MenuAvio();
+        afegirListenersMenu();
     }
 
     /*  
@@ -35,7 +41,9 @@ public class ControladorAvio {
     Retorn: cap
      */
     private void afegirListenersMenu() {
-
+        for (int i = 0; i < menuAvio.getMenuButtons().length; i++) {
+            menuAvio.getMenuButtons()[i].addActionListener((ActionListener) this);
+        }
     }
 
     /*  
@@ -45,7 +53,8 @@ public class ControladorAvio {
     Retorn: cap
      */
     private void afegirListenersForm() {
-
+        formAvio.getDesar().addActionListener((ActionListener) this);
+        formAvio.getSortir().addActionListener((ActionListener) this);
     }
 
     /*  
@@ -55,7 +64,7 @@ public class ControladorAvio {
     Retorn: cap
      */
     private void afegirListenersLlistat() {
- 
+        llistatAvions.getSortir().addActionListener((ActionListener) this);
     }
 
     /*  
@@ -74,8 +83,35 @@ public class ControladorAvio {
     Retorn: avió seleccionat de la companyia actual.
      */
     private Avio seleccionarAvio() {
-
-
+        
+        int cont = 0;
+        
+        for (int i = 0; i < ControladorPrincipal.getCompanyiaActual().getComponents().size(); i++) {
+            if (ControladorPrincipal.getCompanyiaActual().getComponents().get(i) instanceof Avio) {
+                cont++;
+            }
+        }
+        
+        Object[] avions = new Object[cont];
+        Object[] codis = new Object[cont];
+        int cont2 = 0;
+        
+        for (int i = 0; i < ControladorPrincipal.getCompanyiaActual().getComponents().size(); i++) {
+            if (ControladorPrincipal.getCompanyiaActual().getComponents().get(i) instanceof Avio) {
+                codis[cont2]=((Avio)ControladorPrincipal.getCompanyiaActual().getComponents().get(i)).getCodi();
+                avions[cont2]=ControladorPrincipal.getCompanyiaActual().getComponents().get(i);
+                cont2++;
+            }
+        }
+        
+        opcioSeleccionada = JOptionPane.showOptionDialog(null,"Selecciona un avió","Seleccionar avió",JOptionPane.DEFAULT_OPTION,JOptionPane.QUESTION_MESSAGE,null, codis, null);
+        
+        if (opcioSeleccionada > -1){
+            return ((Avio)avions[opcioSeleccionada]);
+        } 
+        
+        return null;
+                
     }
 
     /*  
@@ -88,6 +124,13 @@ public class ControladorAvio {
     Retorn: Verdader si s'han introduït totes les dades. Fals en cas contrari.
      */
     private Boolean validarAvio() {
+        
+        if (formAvio.gettCodi().getText().isEmpty() || formAvio.gettFabricant().getText().isEmpty() || formAvio.gettModel().getText().isEmpty() || formAvio.gettCapacitat().getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "S'han d'introduir dades a tots els camps", "ATENCIÓ!!!", JOptionPane.WARNING_MESSAGE);
+            return false;
+        } else {
+            return true;
+        }
 
     }
 
@@ -141,6 +184,50 @@ public class ControladorAvio {
      */
     public void actionPerformed(ActionEvent e) {
        
+        Object gestorEsdeveniments = e.getSource();
+        
+        if (gestorEsdeveniments.equals(menuAvio.getMenuButtons())) {
+            if (gestorEsdeveniments.equals(menuAvio.getMenuButtons()[0])) {
+                opcioSeleccionada = 0;
+            } else if (gestorEsdeveniments.equals(menuAvio.getMenuButtons()[1])){
+                opcioSeleccionada = 1;
+            } else if (gestorEsdeveniments.equals(menuAvio.getMenuButtons()[2])){
+                opcioSeleccionada = 2;
+            } else if (gestorEsdeveniments.equals(menuAvio.getMenuButtons()[3])){
+                opcioSeleccionada = 3;
+            } else if (gestorEsdeveniments.equals(menuAvio.getMenuButtons()[4])){
+                opcioSeleccionada = 4;
+            }
+            seleccionarOpcio(opcioSeleccionada);
+        } 
+        else if (gestorEsdeveniments.equals(formAvio.getDesar())){
+            if (opcioSeleccionada == 1){
+                if (validarAvio() == true){
+                    try {
+                    Avio nAvio = new Avio(formAvio.gettCodi().getText(), formAvio.gettFabricant().getText(), formAvio.gettModel().getText(), Integer.parseInt(formAvio.gettCapacitat().getText()));
+                    ControladorPrincipal.getCompanyiaActual().getComponents().add(nAvio);
+                    } catch (Exception ex){
+                        JOptionPane.showMessageDialog(null, ex, "EXCEPCIÓ!!!", JOptionPane.WARNING_MESSAGE);
+                    }
+                }
+            } else if (opcioSeleccionada == 2){
+               if (validarAvio() == true){
+                    Avio nAvio = new Avio(formAvio.gettCodi().getText(), formAvio.gettFabricant().getText(), formAvio.gettModel().getText(), Integer.parseInt(formAvio.gettCapacitat().getText()));
+                        for (int i = 0; i < ControladorPrincipal.getCompanyiaActual().getComponents().size(); i++) {
+                            if (((Avio)ControladorPrincipal.getCompanyiaActual().getComponents().get(i)).getCodi() == formAvio.gettCodi().getText()){
+                                ControladorPrincipal.getCompanyiaActual().getComponents().set(i, nAvio);
+                            }
+                   }
+                    
+                } 
+            }
+        } else if (gestorEsdeveniments.equals(formAvio.getSortir())){
+            formAvio.getFrame().setVisible(false);
+            menuAvio.getFrame().setVisible(true);
+        } else if (gestorEsdeveniments.equals(llistatAvions.getSortir())){
+            llistatAvions.getFrame().setVisible(false);
+            menuAvio.getFrame().setVisible(true);
+        }
     }
 
     private void seleccionarOpcio(int opcio) {

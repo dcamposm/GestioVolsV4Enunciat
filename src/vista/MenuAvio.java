@@ -42,7 +42,7 @@ public class MenuAvio {
         menuButtons[0] = new JButton("0. Sortir");
         menuButtons[1] = new JButton("1. Alta");
         menuButtons[2] = new JButton("2. Modificar");
-        menuButtons[3] = new JButton("2. Llistar avions");
+        menuButtons[3] = new JButton("3. Llistar avions");
         
         frame.add(menuButtons[0]);
         frame.add(menuButtons[1]);
