@@ -2,6 +2,7 @@ package persistencia;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
@@ -147,9 +148,21 @@ public class GestorJDBC implements ProveedorPersistencia {
         try {
             cerca = conn.createStatement();
             //recollim el resultat de la cerca
-            cerca.execute("SELECT *  FROM companyies WHERE codi = "+nomFitxer);
-            Companyia nCompanyia = new Companyia(nomFitxer);
+            try {
+                cerca.execute("SELECT *  FROM companyies WHERE codi LIKE '"+nomFitxer+"'");
+            }catch (SQLException ex) {
+                throw new GestioVolsExcepcio("GestorJDBC.noexist");
+            } 
             
+            String resultatNom=cerca.getResultSet().getString("nom");
+            int resultatCodi=cerca.getResultSet().getInt("codi");
+            companyia = new Companyia(resultatCodi, resultatNom);
+            cerca.execute("SELECT *  FROM avions WHERE codiCompanyia LIKE '"+resultatCodi+"'");
+            while(cerca.getResultSet().next()){ 
+                Avio nAvio = new Avio(cerca.getResultSet().getString("codi"), cerca.getResultSet().getString("fabricant"), cerca.getResultSet().getString("model"), cerca.getResultSet().getInt("capacitat"));
+                companyia.getComponents().add(nAvio);
+            }           
+            return companyia;
         } catch (SQLException ex) {
             throw new GestioVolsExcepcio("GestorJDBC.carrega");
         } 
